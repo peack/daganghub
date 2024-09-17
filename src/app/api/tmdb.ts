@@ -3,7 +3,7 @@ import {
   TMDBMediaSearchRecord,
   TMDBMovieSearchRecord,
   TMDBMultiSearchQueryParams,
-} from "@/types/tmdb"
+} from "@/types/tmdb/tmdbSearch"
 
 export const fetchMixedMediaRecords = async (userQuery: string) => {
   const queryParams: TMDBMultiSearchQueryParams = {

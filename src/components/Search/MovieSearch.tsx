@@ -4,7 +4,7 @@ import {
   TMDBMovieSearchRecord,
   TMDBSearchResponse,
   TMDBTvShowSearchRecord,
-} from "@/types/tmdb"
+} from "@/types/tmdb/tmdbSearch"
 import Image from "next/image"
 import React, { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
@@ -12,9 +12,10 @@ import { Button } from "@/components/ui/button"
 import { Search } from "lucide-react"
 import { fetchMixedMediaRecords } from "@/app/api/tmdb"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
+import MovieCard from "../Medias/MovieCard"
 
 type TabSelection = "mixed" | "movies" | "shows"
-interface MediaSearchDisplayProps extends TMDBMediaSearchRecord {
+export interface MediaSearchDisplayProps extends TMDBMediaSearchRecord {
   displayTitle: string
 }
 export default function MediaSearch() {
@@ -134,18 +135,10 @@ export default function MediaSearch() {
             <SearchBar />
           </div>
         </div>
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap gap-2 align-middle">
           {searchResults.length > 0 &&
             filteredResults.map((result) => (
-              <div key={result.id} className="w-200 flex-col">
-                <Image
-                  src={`https://image.tmdb.org/t/p/original${result.poster_path}`}
-                  alt={`${result.displayTitle}`}
-                  width={185}
-                  height={278}
-                />
-                <div className="max-w-[185px]">{result.displayTitle}</div>
-              </div>
+              <MovieCard searchRecord={result} />
             ))}
         </div>
       </div>
