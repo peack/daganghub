@@ -52,10 +52,6 @@ export interface TMDBMultiSearchQueryParams {
   page: number
 }
 
-type TMDBGenreIds = {
-  id: number
-}
-
 export type TMDBMediaType = "movie" | "tv" | "person" | unknown
 
 export interface TMDBMovieDetails {}

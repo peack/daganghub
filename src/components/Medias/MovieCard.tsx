@@ -1,7 +1,7 @@
 import React from "react"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import Image from "next/image"
-import { MediaSearchDisplayProps } from "../Search/MovieSearch"
+import { MediaSearchDisplayProps } from "../Search/MediaSearch"
 import Link from "next/link"
 import qs from "qs"
 
@@ -12,7 +12,7 @@ interface MovieCardProps {
 export default function MovieCard({ searchRecord }: MovieCardProps) {
   const imgSrc = searchRecord?.poster_path
     ? `https://image.tmdb.org/t/p/original${searchRecord?.poster_path}`
-    : "https://placehold.co/185x278"
+    : ""
 
   const linkUrl = `/mediashare/details/${searchRecord?.id}?${qs.stringify({
     media_type: `${searchRecord?.media_type}`,

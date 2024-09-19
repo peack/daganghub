@@ -1,10 +1,17 @@
-import MediaSearch from "@/components/Search/MovieSearch"
-import React from "react"
+import MediaSearch from "@/components/Search/MediaSearch"
 
-export default function page() {
+interface MediaSearchProps {
+  q: string
+}
+export default function page({
+  searchParams,
+}: {
+  searchParams: MediaSearchProps
+}) {
+  console.log(searchParams)
   return (
     <div className="container h-full">
-      <MediaSearch />
+      <MediaSearch searchQuery={searchParams.q} />
     </div>
   )
 }

@@ -2,10 +2,8 @@
 import {
   TMDBMediaSearchRecord,
   TMDBMovieSearchRecord,
-  TMDBSearchResponse,
   TMDBTvShowSearchRecord,
 } from "@/types/tmdb/tmdbSearch"
-import Image from "next/image"
 import React, { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -13,12 +11,17 @@ import { Search } from "lucide-react"
 import { fetchMixedMediaRecords } from "@/app/api/tmdb"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 import MovieCard from "../Medias/MovieCard"
+import { useRouter } from "next/navigation"
 
 type TabSelection = "mixed" | "movies" | "shows"
+
+interface MediaSearchProps {
+  searchQuery?: string
+}
 export interface MediaSearchDisplayProps extends TMDBMediaSearchRecord {
   displayTitle: string
 }
-export default function MediaSearch() {
+export default function MediaSearch({ searchQuery }: MediaSearchProps) {
   const [searchResults, setSearchResults] = useState<MediaSearchDisplayProps[]>(
     []
   )
@@ -27,6 +30,7 @@ export default function MediaSearch() {
   const [isLoading, setIsLoading] = useState(false)
   const [tabSelection, setTabSelection] = useState<TabSelection>("mixed")
   const searchInputRef = React.useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   useEffect(() => {
     switch (tabSelection) {
@@ -49,12 +53,14 @@ export default function MediaSearch() {
     }
   }, [searchResults, tabSelection])
 
-  function handleSearch(e: React.FormEvent): void {
-    e.preventDefault()
-    const searchTerm = searchInputRef.current?.value || ""
-    if (!searchTerm.trim()) return
-    setIsLoading(true)
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch(searchQuery)
+    }
+  }, [searchQuery])
 
+  function handleSearch(searchTerm: string): void {
+    setIsLoading(true)
     fetchMixedMediaRecords(searchTerm).then((results) => {
       const formattedResults: MediaSearchDisplayProps[] = results
         .map((record) => {
@@ -80,6 +86,13 @@ export default function MediaSearch() {
     setIsLoading(false)
   }
 
+  function handleSearchAction(e: React.FormEvent, query?: string): void {
+    e.preventDefault()
+    const searchTerm = searchInputRef.current?.value || ""
+    if (!searchTerm.trim()) return
+    router.push(`/mediashare/media-search?q=${query ?? searchTerm}`)
+  }
+
   const SearchTabs = () => {
     return (
       <Tabs
@@ -102,7 +115,7 @@ export default function MediaSearch() {
   const SearchBar = () => {
     return (
       <form
-        onSubmit={handleSearch}
+        onSubmit={handleSearchAction}
         className="flex w-full max-w-3xl items-center space-x-2"
       >
         <Input
