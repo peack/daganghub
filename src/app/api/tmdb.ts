@@ -25,7 +25,6 @@ export const fetchMixedMediaRecords = async (userQuery: string) => {
   let searchResults: TMDBMediaSearchRecord[] = []
   try {
     const response = await fetch(url, options).then((res) => res.json())
-    console.log(`response: ${response}`)
     searchResults = response.results.map((results: TMDBMediaSearchRecord) => {
       return ["movie", "tv"].includes(results.media_type as string)
         ? results

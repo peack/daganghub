@@ -8,7 +8,6 @@ export default function page({
 }: {
   searchParams: MediaSearchProps
 }) {
-  console.log(searchParams)
   return (
     <div className="container h-full">
       <MediaSearch searchQuery={searchParams.q} />

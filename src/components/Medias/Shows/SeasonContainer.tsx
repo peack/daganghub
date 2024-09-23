@@ -13,7 +13,6 @@ interface SeasonContainerProps {
 
 export default function SeasonContainer({ seasons }: SeasonContainerProps) {
   const baseUrl = `https://image.tmdb.org/t/p/original`
-  console.log(seasons.length)
 
   return (
     <div className="container bg-slate-600 rounded-lg pt-4">
@@ -30,6 +29,7 @@ export default function SeasonContainer({ seasons }: SeasonContainerProps) {
                 height={150}
                 alt="placeholder"
                 className="rounded-lg h-[150px] w-[113px]"
+                priority={false}
               />
               <div className="flex">{season.name}</div>
             </CarouselItem>

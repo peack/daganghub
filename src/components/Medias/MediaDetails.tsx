@@ -2,11 +2,15 @@
 import { fetchMediaDetails } from "@/app/api/tmdb"
 import { TMDBMovieDetailResponse } from "@/types/tmdb/tmdbMovies"
 import { TMDBSeriesDetailResponse } from "@/types/tmdb/tmdbSeries"
-import { useEffect, useState } from "react"
+import { lazy, Suspense, useCallback, useEffect, useState } from "react"
 import Image from "next/image"
 import MediaTag from "./MediaTag"
 import SeasonContainer from "./Shows/SeasonContainer"
 import { TMDBMediaDetailsParams } from "@/types/tmdb/tmdb"
+import { fetchTVProviders, fetchTVProvidersWClient } from "@/app/api/motn"
+import { Show } from "streaming-availability"
+import { set } from "react-hook-form"
+
 interface MediaDetailsProps {
   mediaID: number
   mediaType: "movie" | "tv"
@@ -72,13 +76,14 @@ export default function MediaDetails({
       {media && !isLoading && (
         <>
           {media.backdrop_path && (
-            <div className="relative w-full  min-h-[50dvh] sm:m-h-[55dvh] lg:min-h-[65dvh] m-0 flex flex-col justify-end">
+            <div className="relative w-full min-h-[50dvh] sm:m-h-[55dvh] lg:min-h-[65dvh] m-0 flex flex-col justify-end ">
               <Image
                 src={`https://image.tmdb.org/t/p/original${media.backdrop_path}`}
                 fill={true}
                 alt={mediaTile}
-                objectFit="cover"
+                style={{ objectFit: "cover" }}
                 className="z-0"
+                priority={false}
               />
               <div className="relative bottom-0 right-0 flex flex-row-reverse w-full gap-1 z-20 pb-1 pr-1 ">
                 {media.genres.map((genre) => (
@@ -96,6 +101,7 @@ export default function MediaDetails({
                   height={250}
                   alt={mediaTile}
                   className="rounded-lg w-[188px] h-[250px]"
+                  priority={false}
                 />
               </div>
               <div className="flex-col space-y-2">
